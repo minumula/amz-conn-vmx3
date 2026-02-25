@@ -1,0 +1,12 @@
+aws_region                     = "us-east-1"
+connect_instance_alias         = "my-instance"
+connect_instance_arn           = "arn:aws:connect:us-east-1:123456789012:instance/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+connect_recordings_bucket_arn  = "arn:aws:s3:::connect-recordings-bucket"
+connect_ctr_stream_arn         = "arn:aws:kinesis:us-east-1:123456789012:stream/my-ctr-stream"
+
+recordings_expire_days         = 7
+expired_recording_behavior     = "delete"
+enable_bucket_versioning       = false
+lambda_logging_level           = "INFO"
+package_version                = "2025.09.13"
+url_expire_days                = 7
