@@ -42,8 +42,8 @@ module "lambda" {
   transcribe_error_handler_role_arn = module.iam.transcribe_error_handler_role_arn
   
   sns_topic_arn    = module.storage.sns_topic_arn
-  secrets_id       = module.iam.presigner_secrets_id
   url_expire_days  = var.url_expire_days
+  
 }
 
 module "triggers" {

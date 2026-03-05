@@ -21,7 +21,3 @@ output "presigner_role_arn" {
 output "transcribe_error_handler_role_arn" {
   value = aws_iam_role.transcribe_error_handler.arn
 }
-
-output "presigner_secrets_id" {
-  value = aws_secretsmanager_secret.presigner.id
-}

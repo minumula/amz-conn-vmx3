@@ -15,7 +15,8 @@ terraform {
 
 provider "aws" {
   region = var.aws_region
-
+  profile = ""
+  
   default_tags {
     tags = {
       Solution = "VMX3"
