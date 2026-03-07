@@ -4,98 +4,98 @@
 
 ```json
 {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "S3Management",
-      "Effect": "Allow",
-      "Action": [
-        "s3:CreateBucket",
-        "s3:GetBucket*",
-        "s3:ListBucket",
-        "s3:PutBucket*"
-      ],
-      "Resource": "arn:aws:s3:::vmx3-*"
-    },
-    {
-      "Sid": "IAMRoleManagement",
-      "Effect": "Allow",
-      "Action": [
-        "iam:CreateRole",
-        "iam:GetRole",
-        "iam:PassRole",
-        "iam:ListRolePolicies",
-        "iam:ListAttachedRolePolicies",
-        "iam:AttachRolePolicy",
-        "iam:DetachRolePolicy",
-        "iam:PutRolePolicy",
-        "iam:GetRolePolicy",
-        "iam:TagRole",
-        "iam:UntagRole"
-      ],
-      "Resource": "arn:aws:iam::*:role/VMX3_*"
-    },
-    {
-      "Sid": "LambdaManagement",
-      "Effect": "Allow",
-      "Action": [
-        "lambda:CreateFunction",
-        "lambda:GetFunction",
-        "lambda:GetFunctionConfiguration",
-        "lambda:UpdateFunctionCode",
-        "lambda:UpdateFunctionConfiguration",
-        "lambda:PublishLayerVersion",
-        "lambda:GetLayerVersion",
-        "lambda:AddPermission",
-        "lambda:RemovePermission",
-        "lambda:CreateEventSourceMapping",
-        "lambda:GetEventSourceMapping",
-        "lambda:UpdateEventSourceMapping",
-        "lambda:TagResource",
-        "lambda:UntagResource",
-        "lambda:ListVersionsByFunction"
-      ],
-      "Resource": [
-        "arn:aws:lambda:*:*:function:VMX3-*",
-        "arn:aws:lambda:*:*:layer:VMX3-*",
-        "arn:aws:lambda:*:*:layer:VMX3-*:*",
-        "arn:aws:lambda:*:*:event-source-mapping:*"
-      ]
-    },
-    {
-      "Sid": "EventBridgeManagement",
-      "Effect": "Allow",
-      "Action": [
-        "events:PutRule",
-        "events:DescribeRule",
-        "events:PutTargets",
-        "events:RemoveTargets",
-        "events:ListTargetsByRule",
-        "events:TagResource"
-      ],
-      "Resource": "arn:aws:events:*:*:rule/VMX3-*"
-    },
-    {
-      "Sid": "SNSManagement",
-      "Effect": "Allow",
-      "Action": [
-        "sns:CreateTopic",
-        "sns:GetTopicAttributes",
-        "sns:SetTopicAttributes",
-        "sns:TagResource"
-      ],
-      "Resource": "arn:aws:sns:*:*:vmx3-*"
-    },
-    {
-      "Sid": "ConnectIntegration",
-      "Effect": "Allow",
-      "Action": [
-        "connect:AssociateLambdaFunction",
-        "connect:DisassociateLambdaFunction"
-      ],
-      "Resource": "*"
-    }
-  ]
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "S3Management",
+            "Effect": "Allow",
+            "Action": [
+                "s3:CreateBucket",
+                "s3:GetBucket*",
+                "s3:ListBucket",
+                "s3:PutBucket*"
+            ],
+            "Resource": "arn:aws-us-gov:s3:::vmx3-*"
+        },
+        {
+            "Sid": "IAMRoleManagement",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateRole",
+                "iam:GetRole",
+                "iam:PassRole",
+                "iam:ListRolePolicies",
+                "iam:ListAttachedRolePolicies",
+                "iam:AttachRolePolicy",
+                "iam:DetachRolePolicy",
+                "iam:PutRolePolicy",
+                "iam:GetRolePolicy",
+                "iam:TagRole",
+                "iam:UntagRole"
+            ],
+            "Resource": "arn:aws-us-gov:iam::*:role/VMX3_*"
+        },
+        {
+            "Sid": "LambdaManagement",
+            "Effect": "Allow",
+            "Action": [
+                "lambda:CreateFunction",
+                "lambda:GetFunction",
+                "lambda:GetFunctionConfiguration",
+                "lambda:UpdateFunctionCode",
+                "lambda:UpdateFunctionConfiguration",
+                "lambda:PublishLayerVersion",
+                "lambda:GetLayerVersion",
+                "lambda:AddPermission",
+                "lambda:RemovePermission",
+                "lambda:CreateEventSourceMapping",
+                "lambda:GetEventSourceMapping",
+                "lambda:UpdateEventSourceMapping",
+                "lambda:TagResource",
+                "lambda:UntagResource",
+                "lambda:ListVersionsByFunction"
+            ],
+            "Resource": [
+                "arn:aws-us-gov:lambda:*:*:function:VMX3-*",
+                "arn:aws-us-gov:lambda:*:*:layer:VMX3-*",
+                "arn:aws-us-gov:lambda:*:*:layer:VMX3-*:*",
+                "arn:aws-us-gov:lambda:*:*:event-source-mapping:*"
+            ]
+        },
+        {
+            "Sid": "EventBridgeManagement",
+            "Effect": "Allow",
+            "Action": [
+                "events:PutRule",
+                "events:DescribeRule",
+                "events:PutTargets",
+                "events:RemoveTargets",
+                "events:ListTargetsByRule",
+                "events:TagResource"
+            ],
+            "Resource": "arn:aws-us-gov:events:*:*:rule/VMX3-*"
+        },
+        {
+            "Sid": "SNSManagement",
+            "Effect": "Allow",
+            "Action": [
+                "sns:CreateTopic",
+                "sns:GetTopicAttributes",
+                "sns:SetTopicAttributes",
+                "sns:TagResource"
+            ],
+            "Resource": "arn:aws-us-gov:sns:*:*:vmx3-*"
+        },
+        {
+            "Sid": "ConnectIntegration",
+            "Effect": "Allow",
+            "Action": [
+                "connect:AssociateLambdaFunction",
+                "connect:DisassociateLambdaFunction"
+            ],
+            "Resource": "*"
+        }
+    ]
 }
 ```
 

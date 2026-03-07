@@ -1,26 +1,31 @@
 variable "aws_region" {
   description = "AWS region for deployment"
   type        = string
+  default = "us-gov-west-1"
 }
 
 variable "connect_instance_alias" {
   description = "Amazon Connect instance alias (lowercase)"
   type        = string
+  default = "cruz-connect"
 }
 
 variable "connect_instance_arn" {
   description = "Amazon Connect instance ARN"
   type        = string
+  default = "arn:aws-us-gov:connect:us-gov-west-1:463543931304:instance/83ded80a-4623-40fc-beb5-111f5dd4c8a4"
 }
 
 variable "connect_recordings_bucket_arn" {
   description = "ARN of the S3 bucket used for Connect recordings"
   type        = string
+  default = "arn:aws-us-gov:s3:::amazon-connect-ab665aa37953"
 }
 
 variable "connect_ctr_stream_arn" {
   description = "ARN of the Kinesis Data Stream for CTR streaming"
   type        = string
+  default = "arn:aws-us-gov:kinesis:us-gov-west-1:463543931304:stream/cruz-connect"
 }
 
 variable "recordings_expire_days" {

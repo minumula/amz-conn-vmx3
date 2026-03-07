@@ -63,11 +63,6 @@ variable "sns_topic_arn" {
   type        = string
 }
 
-variable "secrets_id" {
-  description = "Secrets Manager secret ID for presigner credentials"
-  type        = string
-}
-
 variable "url_expire_days" {
   description = "Days before presigned URL expires"
   type        = number

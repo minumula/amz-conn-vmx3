@@ -160,7 +160,6 @@ resource "aws_lambda_function" "presigner" {
     variables = {
       aws_region      = var.aws_region
       package_version = var.package_version
-      secrets_key_id  = var.secrets_id
       url_expire_days = var.url_expire_days
     }
   }

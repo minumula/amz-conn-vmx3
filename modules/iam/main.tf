@@ -16,7 +16,8 @@ resource "aws_iam_role" "recording_processor" {
 
 resource "aws_iam_role_policy_attachment" "recording_processor_basic" {
   role       = aws_iam_role.recording_processor.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  # policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy_arn =  "arn:aws-us-gov:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 resource "aws_iam_role_policy" "recording_processor" {
@@ -71,7 +72,8 @@ resource "aws_iam_role" "transcriber" {
 
 resource "aws_iam_role_policy_attachment" "transcriber_basic" {
   role       = aws_iam_role.transcriber.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  # policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy_arn =  "arn:aws-us-gov:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 resource "aws_iam_role_policy" "transcriber" {
@@ -114,7 +116,8 @@ resource "aws_iam_role" "packager" {
 
 resource "aws_iam_role_policy_attachment" "packager_basic" {
   role       = aws_iam_role.packager.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  # policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy_arn =  "arn:aws-us-gov:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 resource "aws_iam_role_policy" "packager" {
@@ -138,7 +141,8 @@ resource "aws_iam_role_policy" "packager" {
       {
         Effect   = "Allow"
         Action   = ["transcribe:DeleteTranscriptionJob"]
-        Resource = "arn:aws:transcribe:${var.aws_region}:*:transcription-job/vmx3_*"
+        # Resource = "arn:aws:transcribe:${var.aws_region}:*:transcription-job/vmx3_*"
+        Resource = "arn:aws-us-gov:transcribe:${var.aws_region}:*:transcription-job/vmx3_*"
       },
       {
         Effect = "Allow"
@@ -154,7 +158,8 @@ resource "aws_iam_role_policy" "packager" {
       {
         Effect   = "Allow"
         Action   = ["lambda:InvokeFunction"]
-        Resource = "arn:aws:lambda:${var.aws_region}:*:function:VMX3-Presigner-${var.connect_instance_alias}"
+        # Resource = "arn:aws:lambda:${var.aws_region}:*:function:VMX3-Presigner-${var.connect_instance_alias}"
+        Resource = "arn:aws-us-gov:lambda:${var.aws_region}:*:function:VMX3-Presigner-${var.connect_instance_alias}"
       },
       {
         Effect   = "Allow"
@@ -173,7 +178,8 @@ resource "aws_iam_role" "timestamper" {
 
 resource "aws_iam_role_policy_attachment" "timestamper_basic" {
   role       = aws_iam_role.timestamper.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  # policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy_arn =  "arn:aws-us-gov:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 # Presigner Role
@@ -184,7 +190,8 @@ resource "aws_iam_role" "presigner" {
 
 resource "aws_iam_role_policy_attachment" "presigner_basic" {
   role       = aws_iam_role.presigner.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  # policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy_arn =  "arn:aws-us-gov:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 resource "aws_iam_role_policy" "presigner" {
@@ -217,7 +224,8 @@ resource "aws_iam_role" "transcribe_error_handler" {
 
 resource "aws_iam_role_policy_attachment" "transcribe_error_handler_basic" {
   role       = aws_iam_role.transcribe_error_handler.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  # policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy_arn =  "arn:aws-us-gov:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 resource "aws_iam_role_policy" "transcribe_error_handler" {
