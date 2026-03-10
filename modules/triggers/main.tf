@@ -26,7 +26,8 @@ resource "aws_lambda_event_source_mapping" "ctr_stream" {
 
 # EventBridge Rule for Transcriber (S3 recordings bucket)
 resource "aws_cloudwatch_event_rule" "transcriber" {
-  name        = "${var.connect_instance_alias}-TranscriberRule"
+  # name        = "${var.connect_instance_alias}-TranscriberRule"
+  name        = "VMX3-TranscriberRule"
   description = "Trigger transcriber when recording is created"
 
   event_pattern = jsonencode({
@@ -56,7 +57,8 @@ resource "aws_lambda_permission" "transcriber" {
 
 # EventBridge Rule for Packager (S3 transcripts bucket)
 resource "aws_cloudwatch_event_rule" "packager" {
-  name        = "${var.connect_instance_alias}-PackagerRule"
+  # name        = "${var.connect_instance_alias}-PackagerRule"
+  name        = "VMX3-PackagerRule"
   description = "Trigger packager when transcript is created"
 
   event_pattern = jsonencode({

@@ -8,7 +8,12 @@
                 "s3:CreateBucket",
                 "s3:GetBucket*",
                 "s3:ListBucket",
-                "s3:PutBucket*"
+                "s3:PutBucket*",
+                "s3:GetLifecycleConfiguration",
+                "s3:GetReplicationConfiguration",
+                "s3:GetEncryptionConfiguration",
+                "s3:PutEncryptionConfiguration",
+                "s3:PutLifecycleConfiguration"
             ],
             "Resource": "arn:aws-us-gov:s3:::vmx3-*"
         },
@@ -48,13 +53,16 @@
                 "lambda:UpdateEventSourceMapping",
                 "lambda:TagResource",
                 "lambda:UntagResource",
-                "lambda:ListVersionsByFunction"
+                "lambda:ListVersionsByFunction",
+                "lambda:DeleteLayerVersion",
+                "lambda:CreateEventSourceMapping",
+                "lambda:GetPolicy"
             ],
             "Resource": [
                 "arn:aws-us-gov:lambda:*:*:function:VMX3-*",
                 "arn:aws-us-gov:lambda:*:*:layer:VMX3-*",
                 "arn:aws-us-gov:lambda:*:*:layer:VMX3-*:*",
-                "arn:aws-us-gov:lambda:*:*:event-source-mapping:*"
+                "arn:aws-us-gov:lambda:*:*:event-source-mapping:VMX3-*"
             ]
         },
         {
@@ -76,9 +84,11 @@
             "Action": [
                 "sns:CreateTopic",
                 "sns:GetTopicAttributes",
+                "sns:GetSubscriptionAttributes",
                 "sns:SetTopicAttributes",
                 "sns:TagResource",
-                "sns:Subscribe"
+                "sns:Subscribe",
+                "sns:Unsubscribe"
             ],
             "Resource": "arn:aws-us-gov:sns:*:*:vmx3-*"
         },
@@ -87,7 +97,8 @@
             "Effect": "Allow",
             "Action": [
                 "connect:AssociateLambdaFunction",
-                "connect:DisassociateLambdaFunction"
+                "connect:DisassociateLambdaFunction",
+                "connect:ListLambdaFunctions"
             ],
             "Resource": "*"
         }

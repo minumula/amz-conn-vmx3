@@ -44,27 +44,30 @@ resource "aws_s3_bucket_notification" "recordings" {
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "recordings" {
-  count  = var.expired_recording_behavior != "keep" ? 1 : 0
+  # count  = var.expired_recording_behavior != "keep" ? 1 : 0
   bucket = aws_s3_bucket.recordings.id
 
   rule {
     id     = "vmx3-lifecycle"
     status = "Enabled"
 
-    dynamic "expiration" {
-      for_each = var.expired_recording_behavior == "delete" ? [1] : []
-      content {
-        days = var.recordings_expire_days
-      }
+    expiration {
+      days = var.recordings_expire_days
     }
+    # dynamic "expiration" {
+    #   for_each = var.expired_recording_behavior == "delete" ? [1] : []
+    #   content {
+    #     days = var.recordings_expire_days
+    #   }
+    # }
 
-    dynamic "transition" {
-      for_each = var.expired_recording_behavior == "glacier" ? [1] : []
-      content {
-        days          = var.recordings_expire_days
-        storage_class = "GLACIER"
-      }
-    }
+    # dynamic "transition" {
+    #   for_each = var.expired_recording_behavior == "glacier" ? [1] : []
+    #   content {
+    #     days          = var.recordings_expire_days
+    #     storage_class = "GLACIER"
+    #   }
+    # }
   }
 }
 
