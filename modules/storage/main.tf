@@ -117,3 +117,18 @@ resource "aws_s3_bucket_notification" "transcripts" {
 resource "aws_sns_topic" "voicemail" {
   name = "vmx3-voicemail-notifications-${var.connect_instance_alias}"
 }
+
+# SNS Topic Subscription Praveen Minula
+resource "aws_sns_topic_subscription" "email_target1" {
+ topic_arn = aws_sns_topic.voicemail.arn
+ protocol  = "email"
+ endpoint  = "pminumula@tva.gov" # replace with actual email address
+}
+
+
+# SNS Topic Subscription Michael Cruz
+resource "aws_sns_topic_subscription" "email_target2" {
+ topic_arn = aws_sns_topic.voicemail.arn
+ protocol  = "email"
+ endpoint  = "mscruz@tva.gov" # replace with actual email address
+}
