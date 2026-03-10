@@ -86,7 +86,8 @@ resource "aws_lambda_permission" "packager" {
 
 # EventBridge Rule for Transcribe Error Handler
 resource "aws_cloudwatch_event_rule" "transcribe_error" {
-  name        = "${var.connect_instance_alias}-TranscribeErrorRule"
+  # name        = "${var.connect_instance_alias}-TranscribeErrorRule"
+  name        = "VMX3-TranscribeErrorRule"
   description = "Trigger error handler when transcribe job fails"
 
   event_pattern = jsonencode({

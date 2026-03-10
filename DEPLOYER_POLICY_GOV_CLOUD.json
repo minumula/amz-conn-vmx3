@@ -77,7 +77,8 @@
                 "sns:CreateTopic",
                 "sns:GetTopicAttributes",
                 "sns:SetTopicAttributes",
-                "sns:TagResource"
+                "sns:TagResource",
+                "sns:Subscribe"
             ],
             "Resource": "arn:aws-us-gov:sns:*:*:vmx3-*"
         },
