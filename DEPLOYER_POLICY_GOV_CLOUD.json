@@ -55,7 +55,6 @@
                 "lambda:UntagResource",
                 "lambda:ListVersionsByFunction",
                 "lambda:DeleteLayerVersion",
-                "lambda:CreateEventSourceMapping",
                 "lambda:GetPolicy"
             ],
             "Resource": [
