@@ -49,7 +49,6 @@
                 "lambda:GetFunctionConfiguration",
                 "lambda:UpdateFunctionCode",
                 "lambda:UpdateFunctionConfiguration",
-
                 "lambda:AddPermission",
                 "lambda:RemovePermission",
                 "lambda:CreateEventSourceMapping",
@@ -60,10 +59,7 @@
                 "lambda:GetPolicy",
                 "lambda:ListVersionsByFunction"
             ],
-            "Resource": [
-                "arn:aws-us-gov:lambda:*:*:function:VMX3-*"
-
-            ]
+            "Resource": "arn:aws-us-gov:lambda:*:*:function:VMX3-*"
         },
         {
             "Sid": "LambdaLayers",
@@ -125,7 +121,7 @@
                 "connect:DisassociateLambdaFunction",
                 "connect:ListLambdaFunctions"
             ],
-            "Resource": "*"
+            "Resource": "arn:aws-us-gov:connect:*:*:instance/*"
         }
     ]
 }
