@@ -38,24 +38,20 @@ data "archive_file" "transcribe_error_handler" {
 
 # data "archive_file" "python_layer" {
 #   type        = "zip"
-#   source_dir  = "${path.module}/../../layer/python"
-#   output_path = "${path.module}/builds/python_layer.zip"
+#   source_dir  = "${path.module}/layer/zip/python"
+#   # output_path = "${path.module}/builds/python_layer.zip"
+#   output_path = "python_layer.zip"
 # }
 
-data "archive_file" "python_layer" {
-  type        = "zip"
-  source_dir  = "${path.module}/layer/zip/"
-  # output_path = "${path.module}/builds/python_layer.zip"
-  output_path = "python_layer.zip"
-}
-
 resource "aws_lambda_layer_version" "vmx3_python" {
-  filename            = data.archive_file.python_layer.output_path
+  # filename            = data.archive_file.python_layer.output_path
+  filename   = "${path.module}/layer/zip/common.zip"
   layer_name          = "VMX3-Python-CommonLayer-${var.connect_instance_alias}"
   compatible_runtimes = ["python3.13"]
   description = "Provides dependencies code and functions for AWS Lambda functions that power Voicemail Express."
   license_info = "https://aws.amazon.com/apache-2-0"
   # source_code_hash    = data.archive_file.python_layer.output_base64sha256
+  source_code_hash = filebase64sha256("${path.module}/layer/zip/common.zip")
 }
 
 # Recording Processor Lambda
