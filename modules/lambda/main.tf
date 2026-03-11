@@ -43,7 +43,8 @@ data "archive_file" "python_layer" {
 
 resource "aws_lambda_layer_version" "vmx3_python" {
   filename            = data.archive_file.python_layer.output_path
-  layer_name          = "VMX3-Python-Layer-${var.connect_instance_alias}"
+  # layer_name          = "VMX3-Python-Layer-${var.connect_instance_alias}"
+  layer_name          = "python"
   compatible_runtimes = ["python3.13"]
   source_code_hash    = data.archive_file.python_layer.output_base64sha256
 }
