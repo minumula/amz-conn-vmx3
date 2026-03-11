@@ -1,23 +1,25 @@
 # Kinesis Event Source Mapping for Recording Processor
 resource "aws_lambda_event_source_mapping" "ctr_stream" {
+  batch_size        = 1
+  bisect_batch_on_function_error = true
+  enabled = true
   event_source_arn  = var.connect_ctr_stream_arn
   function_name     = var.recording_processor_function_arn
-  starting_position = "LATEST"
-  batch_size        = 1
+  # event_source_arn  = "arn:aws-us-gov:kinesis:us-gov-west-1:463543931304:stream/cruz-connect"
+  # function_name     = "arn:aws-us-gov:lambda:us-gov-west-1:463543931304:function:VMX3-RecordingProcessor-cruz-connect"
   maximum_retry_attempts = 3
-  bisect_batch_on_function_error = true
-
+  starting_position = "LATEST"
   filter_criteria {
     filter {
       pattern = jsonencode({
         data = {
           Attributes = {
-            vmx3_flag = ["1"]
+            vmx3_flag = ["1"]           # VMX3 flag indicates voicemail eligibility
           }
           Recordings = {
-            ParticipantType = ["IVR"]
+            ParticipantType = ["IVR"]   # Only IVR recordings (customer side)
           }
-          Agent = [null]
+          Agent = [null]                # No agent assigned (unanswered call)
         }
       })
     }
