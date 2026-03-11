@@ -49,7 +49,7 @@
                 "lambda:GetFunctionConfiguration",
                 "lambda:UpdateFunctionCode",
                 "lambda:UpdateFunctionConfiguration",
-                "lambda:GetLayerVersion",
+
                 "lambda:AddPermission",
                 "lambda:RemovePermission",
                 "lambda:CreateEventSourceMapping",
@@ -57,7 +57,8 @@
                 "lambda:UpdateEventSourceMapping",
                 "lambda:TagResource",
                 "lambda:UntagResource",
-                "lambda:GetPolicy"
+                "lambda:GetPolicy",
+                "lambda:ListVersionsByFunction"
             ],
             "Resource": [
                 "arn:aws-us-gov:lambda:*:*:function:VMX3-*"
@@ -68,15 +69,13 @@
             "Sid": "LambdaLayers",
             "Effect": "Allow",
             "Action": [
-                "lambda:ListVersionsByFunction",
+                "lambda:GetLayerVersion",
                 "lambda:DeleteLayerVersion",
                 "lambda:PublishLayerVersion"
             ],
             "Resource": [
                 "arn:aws-us-gov:lambda:*:*:layer:VMX3-*",
-                "arn:aws-us-gov:lambda:*:*:layer:VMX3-*:*",
-                "arn:aws-us-gov:lambda:*:*:layer:python",
-                "arn:aws-us-gov:lambda:*:*:layer:python:*"
+                "arn:aws-us-gov:lambda:*:*:layer:VMX3-*:*"
             ]
         },
         {

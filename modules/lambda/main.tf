@@ -34,17 +34,23 @@ data "archive_file" "transcribe_error_handler" {
   output_path = "${path.module}/builds/transcribe_error_handler.zip"
 }
 
-# Lambda Layer for pydub (must be pre-built)
+# Lambda Layer 
+
+# data "archive_file" "python_layer" {
+#   type        = "zip"
+#   source_dir  = "${path.module}/../../layer/python"
+#   output_path = "${path.module}/builds/python_layer.zip"
+# }
+
 data "archive_file" "python_layer" {
   type        = "zip"
-  source_dir  = "${path.module}/../../layer/python"
+  source_dir  = "${path.module}/../../layer/zip"
   output_path = "${path.module}/builds/python_layer.zip"
 }
 
 resource "aws_lambda_layer_version" "vmx3_python" {
   filename            = data.archive_file.python_layer.output_path
-  # layer_name          = "VMX3-Python-Layer-${var.connect_instance_alias}"
-  layer_name          = "python"
+  layer_name          = "VMX3-Python-CommonLayer-${var.connect_instance_alias}"
   compatible_runtimes = ["python3.13"]
   source_code_hash    = data.archive_file.python_layer.output_base64sha256
 }
