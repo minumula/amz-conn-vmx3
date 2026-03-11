@@ -35,14 +35,6 @@ data "archive_file" "transcribe_error_handler" {
 }
 
 # Lambda Layer 
-
-# data "archive_file" "python_layer" {
-#   type        = "zip"
-#   source_dir  = "${path.module}/layer/zip/python"
-#   # output_path = "${path.module}/builds/python_layer.zip"
-#   output_path = "python_layer.zip"
-# }
-
 resource "aws_lambda_layer_version" "vmx3_python" {
   # filename            = data.archive_file.python_layer.output_path
   filename   = "${path.module}/layer/zip/common.zip"
