@@ -38,6 +38,11 @@ variable "recording_processor_function_name" {
   type        = string
 }
 
+variable "recording_processor_function_arn" {
+  description = "Recording processor function arn"
+  type        = string
+}
+
 variable "transcriber_function_arn" {
   description = "Transcriber function ARN"
   type        = string

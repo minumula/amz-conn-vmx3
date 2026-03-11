@@ -38,10 +38,10 @@ variable "expired_recording_behavior" {
   description = "Action when recordings expire: delete, keep, or glacier"
   type        = string
   default     = "delete"
-  # validation {
-  #   condition     = contains(["delete", "keep", "glacier"], var.expired_recording_behavior)
-  #   error_message = "Must be delete, keep, or glacier"
-  # }
+  validation {
+    condition     = contains(["delete", "keep", "glacier"], var.expired_recording_behavior)
+    error_message = "Must be delete, keep, or glacier"
+  }
 }
 
 variable "enable_bucket_versioning" {

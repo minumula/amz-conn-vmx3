@@ -1,7 +1,7 @@
 # Kinesis Event Source Mapping for Recording Processor
 resource "aws_lambda_event_source_mapping" "ctr_stream" {
   event_source_arn  = var.connect_ctr_stream_arn
-  function_name     = var.recording_processor_function_name
+  function_name     = var.recording_processor_function_arn
   starting_position = "LATEST"
   batch_size        = 1
   maximum_retry_attempts = 3
