@@ -86,7 +86,7 @@
                 "lambda:GetEventSourceMapping",
                 "lambda:DeleteEventSourceMapping"
             ],
-            "Resource": "arn:aws-us-gov:lambda:*:*:event-source-mapping:*"
+            "Resource": "*"
         },
         {
             "Sid": "EventBridgeManagement",
