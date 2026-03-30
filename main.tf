@@ -59,6 +59,7 @@ module "triggers" {
   transcripts_bucket_arn    = module.storage.transcripts_bucket_arn
   
   recording_processor_function_name = module.lambda.recording_processor_function_name
+  recording_processor_function_arn  = module.lambda.recording_processor_function_arn
   transcriber_function_arn          = module.lambda.transcriber_function_arn
   packager_function_arn             = module.lambda.packager_function_arn
   timestamper_function_arn          = module.lambda.timestamper_function_arn

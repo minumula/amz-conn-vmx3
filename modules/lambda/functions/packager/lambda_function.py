@@ -61,6 +61,13 @@ def lambda_handler(event, context):
     tags_dict = {tag['Key']: tag['Value'] for tag in recording_tags['TagSet']}
     
     instance_id = tags_dict['vmx3_queue_arn'].split('/')[1]
+
+    customer_response= connect_client.describe_contact(
+        InstanceId = instance_id,
+        ContactId = contact_id
+    )
+    customer_phone = customer_response['Contact']['CustomerEndpoint']['Address']
+
     logger.debug(f'********** Retrieved metadata - Instance: {instance_id} **********')
 
     # Invoke presigner to get presigned URL
@@ -92,7 +99,10 @@ def lambda_handler(event, context):
 New Voicemail Received
 
 Contact ID: {contact_id}
+
 Queue ARN: {tags_dict.get('vmx3_queue_arn', 'N/A')}
+
+Phone: {customer_phone}
 
 Transcript:
 {transcript_text}
@@ -103,7 +113,8 @@ Recording URL (expires in {os.environ.get('url_expire_days', '7')} days):
         
         sns_client.publish(
             TopicArn=sns_topic_arn,
-            Subject=f'Voicemail - Contact {contact_id}',
+            # Subject=f'Voicemail - Contact {contact_id}',
+            Subject=f'Voicemail - Phone Number {customer_phone} - {contact_id}',
             Message=message
         )
         logger.info('********** SNS notification sent **********')

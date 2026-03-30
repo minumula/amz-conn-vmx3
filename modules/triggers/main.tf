@@ -1,23 +1,25 @@
 # Kinesis Event Source Mapping for Recording Processor
 resource "aws_lambda_event_source_mapping" "ctr_stream" {
-  event_source_arn  = var.connect_ctr_stream_arn
-  function_name     = var.recording_processor_function_name
-  starting_position = "LATEST"
   batch_size        = 1
-  maximum_retry_attempts = 3
   bisect_batch_on_function_error = true
-
+  enabled = true
+  event_source_arn  = var.connect_ctr_stream_arn
+  function_name     = var.recording_processor_function_arn
+  # event_source_arn  = "arn:aws-us-gov:kinesis:us-gov-west-1:463543931304:stream/cruz-connect"
+  # function_name     = "arn:aws-us-gov:lambda:us-gov-west-1:463543931304:function:VMX3-RecordingProcessor-cruz-connect"
+  maximum_retry_attempts = 3
+  starting_position = "LATEST"
   filter_criteria {
     filter {
       pattern = jsonencode({
         data = {
           Attributes = {
-            vmx3_flag = ["1"]
+            vmx3_flag = ["1"]           # VMX3 flag indicates voicemail eligibility
           }
           Recordings = {
-            ParticipantType = ["IVR"]
+            ParticipantType = ["IVR"]   # Only IVR recordings (customer side)
           }
-          Agent = [null]
+          Agent = [null]                # No agent assigned (unanswered call)
         }
       })
     }
@@ -26,7 +28,8 @@ resource "aws_lambda_event_source_mapping" "ctr_stream" {
 
 # EventBridge Rule for Transcriber (S3 recordings bucket)
 resource "aws_cloudwatch_event_rule" "transcriber" {
-  name        = "${var.connect_instance_alias}-TranscriberRule"
+  # name        = "${var.connect_instance_alias}-TranscriberRule"
+  name        = "VMX3-TranscriberRule"
   description = "Trigger transcriber when recording is created"
 
   event_pattern = jsonencode({
@@ -56,7 +59,8 @@ resource "aws_lambda_permission" "transcriber" {
 
 # EventBridge Rule for Packager (S3 transcripts bucket)
 resource "aws_cloudwatch_event_rule" "packager" {
-  name        = "${var.connect_instance_alias}-PackagerRule"
+  # name        = "${var.connect_instance_alias}-PackagerRule"
+  name        = "VMX3-PackagerRule"
   description = "Trigger packager when transcript is created"
 
   event_pattern = jsonencode({
@@ -86,7 +90,8 @@ resource "aws_lambda_permission" "packager" {
 
 # EventBridge Rule for Transcribe Error Handler
 resource "aws_cloudwatch_event_rule" "transcribe_error" {
-  name        = "${var.connect_instance_alias}-TranscribeErrorRule"
+  # name        = "${var.connect_instance_alias}-TranscribeErrorRule"
+  name        = "VMX3-TranscribeErrorRule"
   description = "Trigger error handler when transcribe job fails"
 
   event_pattern = jsonencode({

@@ -34,18 +34,16 @@ data "archive_file" "transcribe_error_handler" {
   output_path = "${path.module}/builds/transcribe_error_handler.zip"
 }
 
-# Lambda Layer for pydub (must be pre-built)
-data "archive_file" "python_layer" {
-  type        = "zip"
-  source_dir  = "${path.module}/../../layer/python"
-  output_path = "${path.module}/builds/python_layer.zip"
-}
-
+# Lambda Layer 
 resource "aws_lambda_layer_version" "vmx3_python" {
-  filename            = data.archive_file.python_layer.output_path
-  layer_name          = "VMX3-Python-Layer-${var.connect_instance_alias}"
+  # filename            = data.archive_file.python_layer.output_path
+  filename   = "${path.module}/layer/zip/common.zip"
+  layer_name          = "VMX3-Python-CommonLayer-${var.connect_instance_alias}"
   compatible_runtimes = ["python3.13"]
-  source_code_hash    = data.archive_file.python_layer.output_base64sha256
+  description = "Provides dependencies code and functions for AWS Lambda functions that power Voicemail Express."
+  license_info = "https://aws.amazon.com/apache-2-0"
+  # source_code_hash    = data.archive_file.python_layer.output_base64sha256
+  source_code_hash = filebase64sha256("${path.module}/layer/zip/common.zip")
 }
 
 # Recording Processor Lambda

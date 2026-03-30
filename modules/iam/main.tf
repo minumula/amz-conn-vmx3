@@ -20,6 +20,12 @@ resource "aws_iam_role_policy_attachment" "recording_processor_basic" {
   policy_arn =  "arn:aws-us-gov:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+resource "aws_iam_role_policy_attachment" "recording_processor_basic-kinesis" {
+  role       = aws_iam_role.recording_processor.name
+  # policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy_arn =  "arn:aws-us-gov:iam::aws:policy/service-role/AWSLambdaKinesisExecutionRole"
+}
+
 resource "aws_iam_role_policy" "recording_processor" {
   name = "VMX3_Recording_Processor_Policy"
   role = aws_iam_role.recording_processor.id

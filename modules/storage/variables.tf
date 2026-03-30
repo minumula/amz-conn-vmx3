@@ -17,3 +17,9 @@ variable "enable_bucket_versioning" {
   description = "Enable bucket versioning"
   type        = bool
 }
+
+variable "s3_connect_lifecycle_abort_incomplete_multipart_upload_days_prd" {
+  description = "Abort incomplete multipart upload number of days after initiation."
+  type        = number
+  default     = 1
+}

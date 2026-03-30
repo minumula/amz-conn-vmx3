@@ -45,10 +45,11 @@ resource "aws_s3_bucket_notification" "recordings" {
 
 resource "aws_s3_bucket_lifecycle_configuration" "recordings" {
   count  = var.expired_recording_behavior != "keep" ? 1 : 0
-  bucket = aws_s3_bucket.recordings.id
+  bucket = aws_s3_bucket.recordings.bucket
 
   rule {
     id     = "vmx3-lifecycle"
+    filter {}
     status = "Enabled"
 
     dynamic "expiration" {
@@ -116,4 +117,19 @@ resource "aws_s3_bucket_notification" "transcripts" {
 # SNS Topic for Voicemail Notifications
 resource "aws_sns_topic" "voicemail" {
   name = "vmx3-voicemail-notifications-${var.connect_instance_alias}"
+}
+
+# SNS Topic Subscription Praveen Minula
+resource "aws_sns_topic_subscription" "email_target1" {
+ topic_arn = aws_sns_topic.voicemail.arn
+ protocol  = "email"
+ endpoint  = "pminumula@tva.gov" # replace with actual email address
+}
+
+
+# SNS Topic Subscription Michael Cruz
+resource "aws_sns_topic_subscription" "email_target2" {
+ topic_arn = aws_sns_topic.voicemail.arn
+ protocol  = "email"
+ endpoint  = "mscruz@tva.gov" # replace with actual email address
 }
