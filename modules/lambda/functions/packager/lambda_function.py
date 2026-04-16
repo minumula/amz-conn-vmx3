@@ -107,10 +107,11 @@ Phone: {customer_phone}
 Transcript:
 {transcript_text}
 
-Recording URL (expires in {os.environ.get('url_expire_days', '7')} days):
-{presigned_url}
+Recording URL: https://cruz-connect.govcloud.connect.aws/contact-trace-records/details/{contact_id}?tz=America/New_York
 """
-        
+#         Recording URL (expires in {os.environ.get('url_expire_days', '7')} days):
+# {presigned_url}
+
         sns_client.publish(
             TopicArn=sns_topic_arn,
             # Subject=f'Voicemail - Contact {contact_id}',
