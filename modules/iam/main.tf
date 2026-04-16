@@ -154,7 +154,8 @@ resource "aws_iam_role_policy" "packager" {
         Effect = "Allow"
         Action = [
           "connect:UpdateContactAttributes",
-          "connect:GetContactAttributes"
+          "connect:GetContactAttributes",
+          "connect:DescribeContact"
         ]
         Resource = [
           var.connect_instance_arn,
