@@ -50,14 +50,14 @@ module "lambda" {
 module "triggers" {
   source = "./modules/triggers"
 
-  connect_instance_alias    = var.connect_instance_alias
-  connect_instance_arn      = var.connect_instance_arn
-  connect_instance_id       = local.instance_id
-  connect_ctr_stream_arn      = module.storage.connect_ctr_stream_arn
-  recordings_bucket_name    = module.storage.recordings_bucket_name
-  recordings_bucket_arn     = module.storage.recordings_bucket_arn
-  transcripts_bucket_name   = module.storage.transcripts_bucket_name
-  transcripts_bucket_arn    = module.storage.transcripts_bucket_arn
+  connect_instance_alias            = var.connect_instance_alias
+  connect_instance_arn              = var.connect_instance_arn
+  connect_instance_id               = local.instance_id
+  connect_ctr_stream_arn            = module.storage.connect_ctr_stream_arn
+  recordings_bucket_name            = module.storage.recordings_bucket_name
+  recordings_bucket_arn             = module.storage.recordings_bucket_arn
+  transcripts_bucket_name           = module.storage.transcripts_bucket_name
+  transcripts_bucket_arn            = module.storage.transcripts_bucket_arn
   
   recording_processor_function_name = module.lambda.recording_processor_function_name
   recording_processor_function_arn  = module.lambda.recording_processor_function_arn
