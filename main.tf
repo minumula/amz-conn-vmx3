@@ -18,7 +18,6 @@ module "iam" {
   connect_instance_alias      = var.connect_instance_alias
   connect_instance_arn        = var.connect_instance_arn
   connect_recordings_bucket_arn = var.connect_recordings_bucket_arn
-  # connect_ctr_stream_arn      = var.connect_ctr_stream_arn
   connect_ctr_stream_arn      = module.storage.connect_ctr_stream_arn
   recordings_bucket_arn       = module.storage.recordings_bucket_arn
   transcripts_bucket_arn      = module.storage.transcripts_bucket_arn
@@ -54,7 +53,6 @@ module "triggers" {
   connect_instance_alias    = var.connect_instance_alias
   connect_instance_arn      = var.connect_instance_arn
   connect_instance_id       = local.instance_id
-  # connect_ctr_stream_arn    = var.connect_ctr_stream_arn
   connect_ctr_stream_arn      = module.storage.connect_ctr_stream_arn
   recordings_bucket_name    = module.storage.recordings_bucket_name
   recordings_bucket_arn     = module.storage.recordings_bucket_arn
