@@ -21,6 +21,8 @@ import json
 import logging
 import os
 
+import sub_connect_task
+
 logger = logging.getLogger()
 
 def lambda_handler(event, context):
