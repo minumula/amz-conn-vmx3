@@ -1,3 +1,8 @@
+variable "connect_instance_id" {
+  description = "Connect instance id"
+  type        = string
+}
+
 variable "connect_instance_alias" {
   description = "Connect instance alias"
   type        = string

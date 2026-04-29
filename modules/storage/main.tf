@@ -1,3 +1,30 @@
+resource "aws_kinesis_stream" "connect_ctr" {
+  #checkov:skip=CKV_AWS_185: CMK encryption not required for CTR stream
+  #checkov:skip=CKV_AWS_43: Using default encryption for CTR stream
+  name             = "${var.connect_instance_alias}-ctr"
+  shard_count      = 1
+  retention_period = 24
+
+  stream_mode_details {
+    stream_mode = "PROVISIONED"
+  }
+}
+
+resource "aws_connect_instance_storage_config" "ctr_kinesis" {
+  #checkov:skip=CKV_AWS_270: S3 CMK not applicable for Kinesis storage type
+  #checkov:skip=CKV_AWS_269: Video stream CMK not applicable for CTR config
+  instance_id   = var.connect_instance_id
+  resource_type = "CONTACT_TRACE_RECORDS"
+
+  storage_config {
+    storage_type = "KINESIS_STREAM"
+
+    kinesis_stream_config {
+      stream_arn = aws_kinesis_stream.connect_ctr.arn
+    }
+  }
+}
+
 resource "aws_s3_bucket" "recordings" {
   bucket = "vmx3-recordings-${var.connect_instance_alias}"
 }

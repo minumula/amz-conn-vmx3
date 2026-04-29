@@ -5,6 +5,7 @@ locals {
 module "storage" {
   source = "./modules/storage"
 
+  connect_instance_id         = local.instance_id
   connect_instance_alias      = var.connect_instance_alias
   recordings_expire_days      = var.recordings_expire_days
   expired_recording_behavior  = var.expired_recording_behavior
