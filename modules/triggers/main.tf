@@ -5,8 +5,6 @@ resource "aws_lambda_event_source_mapping" "ctr_stream" {
   enabled = true
   event_source_arn  = var.connect_ctr_stream_arn
   function_name     = var.recording_processor_function_arn
-  # event_source_arn  = "arn:aws-us-gov:kinesis:us-gov-west-1:463543931304:stream/cruz-connect"
-  # function_name     = "arn:aws-us-gov:lambda:us-gov-west-1:463543931304:function:VMX3-RecordingProcessor-cruz-connect"
   maximum_retry_attempts = 3
   starting_position = "LATEST"
   filter_criteria {
@@ -28,7 +26,6 @@ resource "aws_lambda_event_source_mapping" "ctr_stream" {
 
 # EventBridge Rule for Transcriber (S3 recordings bucket)
 resource "aws_cloudwatch_event_rule" "transcriber" {
-  # name        = "${var.connect_instance_alias}-TranscriberRule"
   name        = "VMX3-TranscriberRule"
   description = "Trigger transcriber when recording is created"
 

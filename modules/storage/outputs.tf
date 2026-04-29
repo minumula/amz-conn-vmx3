@@ -17,3 +17,7 @@ output "transcripts_bucket_arn" {
 output "sns_topic_arn" {
   value = aws_sns_topic.voicemail.arn
 }
+
+output "connect_ctr_stream_arn" {
+  value = aws_kinesis_stream.connect_ctr.arn
+}
