@@ -22,12 +22,6 @@ variable "connect_recordings_bucket_arn" {
   default = "arn:aws-us-gov:s3:::amazon-connect-ab665aa37953"
 }
 
-# variable "connect_ctr_stream_arn" {
-#   description = "ARN of the Kinesis Data Stream for CTR streaming"
-#   type        = string
-#   default = "arn:aws-us-gov:kinesis:us-gov-west-1:463543931304:stream/cruz-connect-ctr"
-# }
-
 variable "recordings_expire_days" {
   description = "Days before recordings are lifecycled"
   type        = number
