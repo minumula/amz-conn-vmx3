@@ -72,6 +72,7 @@ def lambda_handler(event, context):
         transcript_text = transcript_data['results']['transcripts'][0]['transcript']
 
         logger.debug(f'********** Transcript retrieved for contact {contact_id} **********')
+        # logger.info('********** Sub: Key Data Extraction Step 1 of 5 Core Attributes Line 75 **********')
         logger.debug(f'Transcript: {transcript_text}')
 
         # Get recording metadata
@@ -83,6 +84,8 @@ def lambda_handler(event, context):
         
         instance_id = tags_dict['vmx3_queue_arn'].split('/')[1]
 
+        # logger.info('********** Sub: Key Data Extraction Step 1 of 5 Core Attributes Line 86 **********')
+
         customer_response= connect_client.describe_contact(
             InstanceId = instance_id,
             ContactId = contact_id
@@ -91,15 +94,21 @@ def lambda_handler(event, context):
 
         function_payload.update({'function_data':{}})
 
+        # logger.info('********** Sub: Key Data Extraction Step 1 of 5 Core Attributes Line 97 **********')
+        
         function_payload['function_data'].update({'transcript_bucket':transcript_bucket, 'recording_bucket':recording_bucket})
         function_payload['function_data'].update({'transcript_key':transcript_key,'transcript_file_name':transcript_file_name,'recording_key':recording_key})
         function_payload['function_data'].update({'contact_id':contact_id})
 
-        transcript_object = s3_resource.Object(function_payload['function_data']['transcript_bucket'], function_payload['function_data']['transcript_key'])
-        file_content = transcript_object.get()['Body'].read().decode('utf-8')
-        json_content = json.loads(file_content)
-        vmx3_transcript_contents = json_content['results']['transcripts'][0]['transcript']
-        function_payload['function_data'].update({'vmx3_transcript_contents':vmx3_transcript_contents})
+        # logger.info('********** Sub: Key Data Extraction Step 1 of 5 Core Attributes Line 103 **********')
+
+        # transcript_object = s3_resource.Object(function_payload['function_data']['transcript_bucket'], function_payload['function_data']['transcript_key'])
+        # file_content = transcript_object.get()['Body'].read().decode('utf-8')
+        # json_content = json.loads(file_content)
+        # vmx3_transcript_contents = json_content['results']['transcripts'][0]['transcript']
+        # function_payload['function_data'].update({'vmx3_transcript_contents':vmx3_transcript_contents})
+
+        function_payload['function_data'].update({'vmx3_transcript_contents':transcript_text})
 
         logger.info('********** Sub: Key Data Extraction Step 1 of 5 Core Attributes Complete **********')
 
@@ -192,7 +201,7 @@ def lambda_handler(event, context):
 
     #3. Build Data Payload with Transcript and Queue Details
     try:
-        function_payload['function_data'].update({'vmx3_transcript_contents':vmx3_transcript_contents})
+        function_payload['function_data'].update({'vmx3_transcript_contents':transcript_text})
         logger.info('********** Sub:Process Transcription Step 1 of 2 - Retrieved transcript from S3 **********')
 
     except Exception as e:
@@ -221,7 +230,6 @@ def lambda_handler(event, context):
         function_payload['vmx_data'].update({'vmx3_queue_name':vmx3_queue_name})        
 
     logger.info('********** Voicemail Packager Step 3 of 6 Build Data Payload Complete **********')
-    # logger.debug(function_payload)
 
     # 4. Invoke presigner Lambda to generate presigned URL for recording
     # Invoke presigner to get presigned URL
@@ -254,8 +262,6 @@ def lambda_handler(event, context):
     # Deliver Task
     try:
         
-        # write_vm = sub_connect_task.vmx3_to_connect_task(function_payload)
-        
         # 1. Set parameters
         # Make sure transcript fits in a task field and truncate if it does not.
         # Make sure transcript fits in field and truncate if it does not.
@@ -266,6 +272,7 @@ def lambda_handler(event, context):
         else:
             logger.debug('********** Transcript within limits **********')
             vmx3_short_transcript = vmx3_transcript
+        #
         contact_flow = os.environ['default_task_flow']
         #    
         logger.debug('********** GenAI Summary Disabled **********')
@@ -321,39 +328,7 @@ def lambda_handler(event, context):
         logger.error(e)
         raise Exception      
 
-    logger.info('********** Voicemail Packager Step 5 of 6 Deliver Task Complete **********')    
-
-#     # Send SNS notification with transcript and presigned URL
-#     try:
-#         sns_topic_arn = os.environ['sns_topic_arn']
-        
-#         message = f"""
-# New Voicemail Received
-
-# Contact ID: {contact_id}
-
-# Queue ARN: {tags_dict.get('vmx3_queue_arn', 'N/A')}
-
-# Phone: {customer_phone}
-
-# Transcript:
-# {transcript_text}
-
-# Recording URL: https://cruz-connect.govcloud.connect.aws/contact-trace-records/details/{contact_id}?tz=America/New_York
-# """
-# #         Recording URL (expires in {os.environ.get('url_expire_days', '7')} days):
-# # {presigned_url}
-
-#         sns_client.publish(
-#             TopicArn=sns_topic_arn,
-#             # Subject=f'Voicemail - Contact {contact_id}',
-#             Subject=f'Voicemail - Phone Number {customer_phone} - {contact_id}',
-#             Message=message
-#         )
-#         logger.info('********** SNS notification sent **********')
-#     except Exception as e:
-#         logger.error('********** Failed to send SNS notification **********')
-#         logger.error(e)
+    logger.info('********** Voicemail Packager Step 5 of 6 Deliver Task Complete **********')
 
     # 6. Do cleanup
     # Delete transcription job
