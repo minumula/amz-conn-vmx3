@@ -69,3 +69,9 @@ variable "url_expire_days" {
     error_message = "URL expiration must be between 1 and 7 days"
   }
 }
+
+variable "default_task_flow" {
+  description = "Default Task Flow"
+  type        = string
+  default     = "arn:aws-us-gov:connect:us-gov-west-1:463543931304:instance/83ded80a-4623-40fc-beb5-111f5dd4c8a4/contact-flow/7a65a852-d4f8-46a5-a3a7-d13371e9db72"
+}

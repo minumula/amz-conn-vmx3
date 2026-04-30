@@ -44,6 +44,7 @@ module "lambda" {
   
   sns_topic_arn    = module.storage.sns_topic_arn
   url_expire_days  = var.url_expire_days
+  default_task_flow = var.default_task_flow
   
 }
 

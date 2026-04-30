@@ -21,7 +21,6 @@ import json
 import logging
 import os
 
-import sub_connect_task
 
 logger = logging.getLogger()
 

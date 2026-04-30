@@ -68,3 +68,9 @@ variable "url_expire_days" {
   type        = number
   default     = 7
 }
+
+variable "default_task_flow" {
+  description = "Default Task Flow"
+  type        = string
+}
+

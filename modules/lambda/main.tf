@@ -12,8 +12,8 @@ data "archive_file" "transcriber" {
 
 data "archive_file" "packager" {
   type        = "zip"
-  # source_file = "${path.module}/functions/packager/lambda_function.py"
-  source_dir  = "${path.module}/functions/packager"
+  source_file = "${path.module}/functions/packager/lambda_function.py"
+  # source_dir  = "${path.module}/functions/packager"
   output_path = "${path.module}/builds/packager.zip"
 }
 
@@ -118,6 +118,7 @@ resource "aws_lambda_function" "packager" {
       presigner_function_arn = aws_lambda_function.presigner.arn
       sns_topic_arn         = var.sns_topic_arn
       url_expire_days       = var.url_expire_days
+      default_task_flow     = var.default_task_flow
     }
   }
 
