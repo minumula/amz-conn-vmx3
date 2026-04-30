@@ -12,7 +12,8 @@ data "archive_file" "transcriber" {
 
 data "archive_file" "packager" {
   type        = "zip"
-  source_file = "${path.module}/functions/packager/lambda_function.py"
+  # source_file = "${path.module}/functions/packager/lambda_function.py"
+  source_dir  = "${path.module}/functions/packager"
   output_path = "${path.module}/builds/packager.zip"
 }
 
