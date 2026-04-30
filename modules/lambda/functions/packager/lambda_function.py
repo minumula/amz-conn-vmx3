@@ -349,10 +349,11 @@ def lambda_handler(event, context):
         )
         logger.debug('********** vmx3_flag cleared for contact **********')
         logger.info('********** Voicemail Packager Step 6 of 6 Cleanup complete **********')
-        function_response.update({'status':'complete','result':'success'})
-        return {function_response}
 
     except Exception as e:
         logger.error('********** Failed to clear vmx3_flag **********')
         logger.info('********** Voicemail Packager Step 6 of 6 Cleanup failed **********')
         logger.error(e)
+    
+    function_response.update({'status':'complete','result':'success'})
+    return function_response
