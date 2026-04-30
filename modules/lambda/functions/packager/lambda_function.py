@@ -332,7 +332,7 @@ def lambda_handler(event, context):
     # Delete transcription job
     try:
         transcribe_client.delete_transcription_job(
-            TranscriptionJobName='vmx3_' + contact_id
+            TranscriptionJobName='vmx3_' + function_payload['function_data']['contact_id']
         )
         logger.debug('********** Transcribe Job Deleted **********')
 
@@ -343,8 +343,8 @@ def lambda_handler(event, context):
     # Clear vmx3_flag for this contact
     try:
         connect_client.update_contact_attributes(
-            InitialContactId=contact_id,
-            InstanceId=instance_id,
+            InitialContactId=function_payload['function_data']['contact_id'],
+            InstanceId=function_payload['function_data']['instance_id'],
             Attributes={'vmx3_flag': '0'}
         )
         logger.debug('********** vmx3_flag cleared for contact **********')
