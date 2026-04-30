@@ -156,7 +156,8 @@ resource "aws_iam_role_policy" "packager" {
           "connect:UpdateContactAttributes",
           "connect:GetContactAttributes",
           "connect:DescribeContact",
-          "connect:StartTaskContact"
+          "connect:StartTaskContact",
+          "connect:DescribeQueue"
         ]
         Resource = [
           var.connect_instance_arn,
@@ -164,13 +165,6 @@ resource "aws_iam_role_policy" "packager" {
           "${var.connect_instance_arn}/contact-flow/*",
           "${var.connect_instance_arn}/queue/*",
         ]
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "connect:DescribeQueue"
-        ]
-        Resource = "*"
       },
       {
         Effect   = "Allow"

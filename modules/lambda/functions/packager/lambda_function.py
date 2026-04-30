@@ -29,26 +29,28 @@ def lambda_handler(event, context):
     logger.debug('Code Version: ' + current_version)
     logger.debug('VMX3 Package Version: ' + os.environ['package_version'])
     logger.debug('********** Beginning Voicemail Packager **********')
-    logger.debug(event)
-    
-    # Establish empty containers
-    function_response = {} # for the response
-    function_payload = {} # for passing data to sub functions
-
-    # Establish required clients
-    s3_client = boto3.client('s3')
-    s3_resource = boto3.resource('s3')
-    transcribe_client = boto3.client('transcribe')
-    connect_client = boto3.client('connect')
-    lambda_client = boto3.client('lambda')
-    sns_client = boto3.client('sns')
+    logger.info(event)
 
     # 1. Initialization: Process the incoming event, filter write checks, establish clients
     try:
-
+        # Establish empty containers
+        function_response = {} # for the response
+        function_payload = {} # for passing data to sub functions
+        function_payload.update({'vmx_data':{}})
+        function_payload.update({'function_data':{}})
+        
+        # Filter out write checks
         if event['detail']['object']['key'].endswith('.write_access_check_file.temp'):
             logger.info('********** WRITE TEST - IGNORE **********')
             return('********** WRITE TEST - IGNORE **********')
+
+        # Establish required clients
+        s3_client = boto3.client('s3')
+        s3_resource = boto3.resource('s3')
+        transcribe_client = boto3.client('transcribe')
+        connect_client = boto3.client('connect')
+        lambda_client = boto3.client('lambda')
+        sns_client = boto3.client('sns')
 
         logger.debug('********** Initialization Complete **********')
         logger.info('********** Voicemail Packager Step 1 of 6 Initialization of Clients & Containers complete **********')
@@ -67,13 +69,12 @@ def lambda_handler(event, context):
         transcript_file_name = transcript_key.rsplit('/',1)[1]
         contact_id = transcript_key.rsplit('/',1)[1].replace('.json','')
         
-        transcript_obj = s3_client.get_object(Bucket=transcript_bucket, Key=transcript_key)
-        transcript_data = json.loads(transcript_obj['Body'].read().decode('utf-8'))
-        transcript_text = transcript_data['results']['transcripts'][0]['transcript']
+        # transcript_obj = s3_client.get_object(Bucket=transcript_bucket, Key=transcript_key)
+        # transcript_data = json.loads(transcript_obj['Body'].read().decode('utf-8'))
+        # transcript_text = transcript_data['results']['transcripts'][0]['transcript']
 
         logger.debug(f'********** Transcript retrieved for contact {contact_id} **********')
         # logger.info('********** Sub: Key Data Extraction Step 1 of 5 Core Attributes Line 75 **********')
-        logger.debug(f'Transcript: {transcript_text}')
 
         # Get recording metadata
         recording_key = transcript_key.replace('.json', '.wav')
@@ -92,7 +93,6 @@ def lambda_handler(event, context):
         )
         customer_phone = customer_response['Contact']['CustomerEndpoint']['Address']
 
-        function_payload.update({'function_data':{}})
 
         # logger.info('********** Sub: Key Data Extraction Step 1 of 5 Core Attributes Line 97 **********')
         
@@ -102,13 +102,13 @@ def lambda_handler(event, context):
 
         # logger.info('********** Sub: Key Data Extraction Step 1 of 5 Core Attributes Line 103 **********')
 
-        # transcript_object = s3_resource.Object(function_payload['function_data']['transcript_bucket'], function_payload['function_data']['transcript_key'])
-        # file_content = transcript_object.get()['Body'].read().decode('utf-8')
-        # json_content = json.loads(file_content)
-        # vmx3_transcript_contents = json_content['results']['transcripts'][0]['transcript']
-        # function_payload['function_data'].update({'vmx3_transcript_contents':vmx3_transcript_contents})
+        transcript_object = s3_resource.Object(function_payload['function_data']['transcript_bucket'], function_payload['function_data']['transcript_key'])
+        file_content = transcript_object.get()['Body'].read().decode('utf-8')
+        json_content = json.loads(file_content)
+        vmx3_transcript_contents = json_content['results']['transcripts'][0]['transcript']
+        function_payload['function_data'].update({'vmx3_transcript_contents':vmx3_transcript_contents})
 
-        function_payload['function_data'].update({'vmx3_transcript_contents':transcript_text})
+        #function_payload['function_data'].update({'vmx3_transcript_contents':transcript_text})
 
         logger.info('********** Sub: Key Data Extraction Step 1 of 5 Core Attributes Complete **********')
 
@@ -155,7 +155,7 @@ def lambda_handler(event, context):
         raise Exception
 
     # Get the current date and time in UTC using timezone-aware objects
-    function_payload.update({'vmx_data':{}})
+    
     try:
         current_datetime = datetime.now()
         formatted_datetime = current_datetime.strftime("%A, %b %d at %I:%M %p (Instance Time)")
@@ -189,19 +189,19 @@ def lambda_handler(event, context):
 
         function_payload.update({'original_contact_attributes':original_contact_attributes})
         logger.info('********** Sub: Key Data Extraction Step 5 of 5 - Contact attributes for voicemail set **********')
+        logger.info('********** Voicemail Packager Step 2 of 6 Key Data Extraction Complete **********')
 
     except Exception as e:
         logger.info('********** Sub: Key Data Extraction Step 5 of 5 - Failed to get contact attributes for voicemail **********')
+        logger.info('********** Voicemail Packager Step 2 of 6 Key Data Extraction failed **********')
         logger.error(e)
-        raise Exception                   
+        raise Exception
 
-    logger.info('********** Voicemail Packager Step 2 of 6 Key Data Extraction Complete **********')
-    logger.debug(function_payload)
-    logger.debug(f'********** Retrieved metadata - Instance: {instance_id} **********')
 
     #3. Build Data Payload with Transcript and Queue Details
     try:
-        function_payload['function_data'].update({'vmx3_transcript_contents':transcript_text})
+        #function_payload['function_data'].update({'vmx3_transcript_contents':transcript_text})
+        function_payload['function_data'].update({'vmx3_transcript_contents':vmx3_transcript_contents})
         logger.info('********** Sub:Process Transcription Step 1 of 2 - Retrieved transcript from S3 **********')
 
     except Exception as e:
@@ -221,15 +221,15 @@ def lambda_handler(event, context):
         vmx3_queue_arn = get_queue_details['Queue']['QueueArn']
         function_payload['vmx_data'].update({'vmx3_queue_name':vmx3_queue_name,'vmx3_queue_arn':vmx3_queue_arn})
         logger.info('********** Sub:Record Result Step 2 of 2: Queue details extracted **********')
+        logger.info('********** Voicemail Packager Step 3 of 6 Queue details Complete **********')
 
     except Exception as e:
         logger.info('********** Sub:Record Result Step 2 of 2: Failed to extract queue details **********')
+        logger.info('********** Voicemail Packager Step 3 of 6 Failed Queue details Complete **********')
         logger.error(e)
         
         vmx3_queue_name = 'UNKNOWN'
         function_payload['vmx_data'].update({'vmx3_queue_name':vmx3_queue_name})        
-
-    logger.info('********** Voicemail Packager Step 3 of 6 Build Data Payload Complete **********')
 
     # 4. Invoke presigner Lambda to generate presigned URL for recording
     # Invoke presigner to get presigned URL
@@ -249,14 +249,13 @@ def lambda_handler(event, context):
         presigned_url = response_from_presigner['presigned_url']
         function_payload['vmx_data'].update({'vmx3_presigned_url':presigned_url})
         logger.debug('********** Presigner Completed **********')
+        logger.info('********** Voicemail Packager Step 4 of 6 Presigner Generation Complete **********')
 
     except Exception as e:
         logger.error('********** Failed to generate presigned URL **********')
         logger.info('********** Voicemail Packager Step 4 of 6 failed, but continuing with deliver since we have a transcript **********')
         logger.error(e)
-        presigned_url = 'https://github.com/amazon-connect/voicemail-express-amazon-connect'
-
-    logger.info('********** Voicemail Packager Step 4 of 6 Presigner Generation Complete **********')
+        presigned_url = 'https://github.com/amazon-connect/voicemail-express-amazon-connect' 
 
     # 5. Deliver Voicemail
     # Deliver Task
@@ -321,14 +320,13 @@ def lambda_handler(event, context):
         logger.debug('********** Voicemail Task Created **********')
         logger.info('********** Sub: Voicemail to Task Step 2 of 2 Complete **********')
         function_response.update({'result':'success','task': create_task})
+        logger.info('********** Voicemail Packager Step 5 of 6 Deliver Task Complete **********')
 
     except Exception as e:
         logger.error('********** Failed to deliver task function **********')
-        logger.info('********** Voicemail Packager Step 5 of 6 failed **********')
+        logger.info('********** Voicemail Packager Step 5 of 6 Deliver Task failed **********')
         logger.error(e)
         raise Exception      
-
-    logger.info('********** Voicemail Packager Step 5 of 6 Deliver Task Complete **********')
 
     # 6. Do cleanup
     # Delete transcription job
@@ -350,12 +348,11 @@ def lambda_handler(event, context):
             Attributes={'vmx3_flag': '0'}
         )
         logger.debug('********** vmx3_flag cleared for contact **********')
+        logger.info('********** Voicemail Packager Step 6 of 6 Cleanup complete **********')
+        function_response.update({'status':'complete','result':'success'})
+        return {function_response}
 
     except Exception as e:
         logger.error('********** Failed to clear vmx3_flag **********')
+        logger.info('********** Voicemail Packager Step 6 of 6 Cleanup failed **********')
         logger.error(e)
-
-    logger.info('********** Voicemail Packager Step 6 of 6 Cleanup complete **********')
-
-    function_response.update({'status':'complete','result':'success'})
-    return {'status':'complete','result':'success'}
