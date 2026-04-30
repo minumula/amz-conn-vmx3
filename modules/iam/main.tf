@@ -137,7 +137,8 @@ resource "aws_iam_role_policy" "packager" {
         Effect = "Allow"
         Action = [
           "s3:GetObject",
-          "s3:GetObjectTagging"
+          "s3:GetObjectTagging",
+          "s3:ListBucket"
         ]
         Resource = [
           "${var.recordings_bucket_arn}/*",
