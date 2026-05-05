@@ -6,7 +6,7 @@ resource "aws_kinesis_stream" "connect_ctr" {
   retention_period = 24
 
   stream_mode_details {
-    stream_mode = "PROVISIONED"
+    stream_mode = "ON_DEMAND"
   }
 }
 
