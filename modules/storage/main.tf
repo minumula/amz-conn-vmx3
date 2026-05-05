@@ -2,7 +2,6 @@ resource "aws_kinesis_stream" "connect_ctr" {
   #checkov:skip=CKV_AWS_185: CMK encryption not required for CTR stream
   #checkov:skip=CKV_AWS_43: Using default encryption for CTR stream
   name             = "${var.connect_instance_alias}-ctr"
-  shard_count      = 1
   retention_period = 24
 
   stream_mode_details {
